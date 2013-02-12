@@ -776,17 +776,25 @@ module.exports = exports = nano = function database_module(cfg) {
     *
     * @param {design_name:string} design document name
     * @param {view_name:string} search view to call
-    * @param {params:object} additions to the querystring
+    * @param {query:string} the search query
+    * @param {params:object:optional} additions to the querystring
     *
     * @see relax
     */
-    function search_docs(design_name,view_name,params,callback) {
+    function search_docs(design_name,view_name,query,params,callback) {
+      if(typeof params === "function") {
+        callback = params;
+        params   = {};
+      }
       var view_path = '_design/' + design_name + '/_search/'  + view_name;
+      params        = params || {};
+      params.query  = query;
+
       return relax({db: db_name, path: view_path
                    , method: "GET", params: params},callback);
     }
 
-    /*
+   /*
     * calls a show function
     *
     * @param {design_name:string} design document name
