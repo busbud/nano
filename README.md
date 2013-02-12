@@ -47,6 +47,7 @@ minimalistic couchdb driver for node.js
 	- [db.attachment.get(docname, attname, [params], [callback])](#dbattachmentgetdocname-attname-params-callback)
 	- [db.attachment.destroy(docname, attname, rev, [callback])](#dbattachmentdestroydocname-attname-rev-callback)
 - [views and design functions](#views-and-design-functions)
+	- [db.search(designname, viewname, [params], [callback])](#dbsearchdesignname-viewname-params-callback)
 	- [db.view(designname, viewname, [params], [callback])](#dbviewdesignname-viewname-params-callback)
 	- [db.show(designname, showname, doc_id, [params], [callback])](#dbshowdesignname-showname-doc_id-params-callback)
 	- [db.atomic(designname, updatename, docname, [body], [callback])](#dbatomicdesignname-updatename-docname-body-callback)
@@ -496,6 +497,21 @@ alice.attachment.destroy('rabbit', 'rabbit.png',
 ```
 
 ## views and design functions
+
+### db.search(designname, viewname, params, [callback])
+
+calls a search view of the specified design with optional query string additions
+`params`. see [Cloudant's search API](https://cloudant.com/for-developers/search/) for detailed query parameters.
+
+``` js
+alice.search('characters', 'crazy_ones', {q: 'rab*'}, function(err, body) {
+  if (!err) {
+    body.rows.forEach(function(doc) {
+      console.log(doc.value);
+    });
+  }
+});
+```
 
 ### db.view(designname, viewname, [params], [callback])
 
