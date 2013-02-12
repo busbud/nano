@@ -771,6 +771,25 @@ module.exports = exports = nano = function database_module(cfg) {
       }
     }
 
+   /*
+    * calls a search view
+    *
+    * @param {design_name:string} design document name
+    * @param {view_name:string} search view to call
+    * @param {params:object:optional} additions to the querystring
+    *
+    * @see relax
+    */
+    function search_docs(design_name,view_name,params,callback) {
+      if(typeof params === "function") {
+        callback = params;
+        params   = {};
+      }
+      var view_path = '_design/' + design_name + '/_search/'  + view_name;
+      return relax({db: db_name, path: view_path
+                   , method: "GET", params: params},callback);
+    }
+
     /*
     * calls a show function
     *
@@ -925,6 +944,7 @@ module.exports = exports = nano = function database_module(cfg) {
       , bulk              : bulk_docs
       , list              : list_docs
       , fetch             : fetch_docs
+      , search            : search_docs
       , config            : {url: cfg.url, db: db_name}
       , attachment        :
         { insert          : insert_att
